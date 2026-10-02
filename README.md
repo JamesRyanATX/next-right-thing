@@ -69,6 +69,14 @@ Check the current mix yourself:
 skills/iterate/scripts/ratio.sh --since "30 days ago" [--author <pattern>] [--ratio 1:1:1]
 ```
 
+## Origin
+
+Most prioritization schemes rank individual tasks. Survive/Invest/Grow sets an allocation across kinds of work instead, the way a portfolio does, and ranks only inside each kind.
+
+The idea came from reading Maslow. His hierarchy of needs is usually drawn as a pyramid and read as a ladder: finish one level, unlock the next. Maslow never drew the pyramid, and his 1943 paper, "A Theory of Human Motivation", says something different. Needs are met partially and all at once, and he gives illustrative figures for an average person: about 85% satisfied on physiological needs, 70% on safety, 50% on love, 40% on esteem and 10% on self-actualization. That is a ratio, not a sequence.
+
+The three buckets apply that to a codebase. A repo that spends everything on survival is firefighting and calling it a plan; one that only chases growth lets the basics rot. Invest connects the two: making the lights cheaper lowers the cost of surviving, and the freed capacity pays for growth.
+
 ## Requirements
 
 `git`, `bash`, `awk`. `gh` or `glab` for issue tracking (optional; without one, `/next-right-thing:iterate` runs discovery only and skips PRs).
