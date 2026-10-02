@@ -1,0 +1,15 @@
+{
+  "name": "jamesryanatx",
+  "description": "James Ryan's Claude Code plugins",
+  "owner": {
+    "name": "James Ryan",
+    "url": "https://github.com/JamesRyanATX"
+  },
+  "plugins": [
+    {
+      "name": "next-right-thing",
+      "source": "./",
+      "description": "Do the next right piece of work, balanced across Survive/Invest/Grow."
+    }
+  ]
+}
