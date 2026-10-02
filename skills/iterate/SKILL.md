@@ -1,10 +1,10 @@
 ---
-name: nrt
-description: Do the next right piece of work in this repo, chosen to keep a Survive/Invest/Grow balance (default 1:1:1). Use when the user types /nrt or asks for the next right thing to work on, optionally with survive, invest or grow to force a bucket.
+name: iterate
+description: Do the next right piece of work in this repo, chosen to keep a Survive/Invest/Grow balance (default 1:1:1). Use when the user types /next-right-thing:iterate or asks for the next right thing to work on, optionally with survive, invest or grow to force a bucket.
 argument-hint: "[survive|invest|grow] [--dry-run]"
 ---
 
-# /nrt — Next Right Thing
+# /next-right-thing:iterate — Next Right Thing
 
 Pick **one** unit of work and do it. The pick comes from a portfolio rule, not from whatever is loudest.
 
@@ -40,7 +40,7 @@ If the user forced `invest`/`grow` and the override trips, say so in one line an
 
 ### 2b. Ratio deficit
 
-Run `bash "${CLAUDE_PLUGIN_ROOT}/skills/nrt/scripts/ratio.sh" --since "30 days ago"` (add `--author` only if the user asked for personal balance). It classifies commits by `NRT-Bucket:` trailer, then conventional-commit type, and prints `NRT_DEFICIT=<bucket>`. Use that bucket.
+Run `bash "${CLAUDE_PLUGIN_ROOT}/skills/iterate/scripts/ratio.sh" --since "30 days ago"` (add `--author` only if the user asked for personal balance). It classifies commits by `NRT-Bucket:` trailer, then conventional-commit type, and prints `NRT_DEFICIT=<bucket>`. Use that bucket.
 
 If fewer than 5 commits are classified, the signal is noise: treat as 1:1:1 starting fresh and pick survive → invest → grow by whichever has the strongest candidate in step 3.
 
@@ -121,7 +121,7 @@ next #131 flaky TestReconcile, #118 dedupe retry helpers
 
 ## 7. Close out
 
-One short block: what changed, PR link, ratio after this commit, and the runner-up for the next `/nrt`. No step recap.
+One short block: what changed, PR link, ratio after this commit, and the runner-up for the next `/next-right-thing:iterate`. No step recap.
 
 ## Rules
 

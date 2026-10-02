@@ -10,7 +10,7 @@ A Claude Code plugin that picks and does the next piece of work in a repo, using
 | invest  | make the lights cheaper | toil removal, refactors, perf, CI speed, automation, docs |
 | grow    | install new lights      | features, new capabilities, integrations |
 
-In a balanced setting the ratio is **1:1:1**. `/nrt` measures the recent mix from git history and works the bucket that's furthest behind.
+In a balanced setting the ratio is **1:1:1**. `/next-right-thing:iterate` measures the recent mix from git history and works the bucket that's furthest behind.
 
 ## Install
 
@@ -22,11 +22,11 @@ In a balanced setting the ratio is **1:1:1**. `/nrt` measures the recent mix fro
 ## Use
 
 ```
-/next-right-thing:nrt            # pick the bucket from the ratio deficit
-/next-right-thing:nrt survive    # force a bucket
-/next-right-thing:nrt invest
-/next-right-thing:nrt grow
-/next-right-thing:nrt --dry-run  # report the pick, change nothing
+/next-right-thing:iterate            # pick the bucket from the ratio deficit
+/next-right-thing:iterate survive    # force a bucket
+/next-right-thing:iterate invest
+/next-right-thing:iterate grow
+/next-right-thing:iterate --dry-run  # report the pick, change nothing
 ```
 
 ## How it decides
@@ -54,12 +54,12 @@ Target ratio, in priority order:
 Check the current mix yourself:
 
 ```
-skills/nrt/scripts/ratio.sh --since "30 days ago" [--author <pattern>] [--ratio 1:1:1]
+skills/iterate/scripts/ratio.sh --since "30 days ago" [--author <pattern>] [--ratio 1:1:1]
 ```
 
 ## Requirements
 
-`git`, `bash`, `awk`. `gh` or `glab` for issue tracking (optional; without one, `/nrt` runs discovery only and skips PRs).
+`git`, `bash`, `awk`. `gh` or `glab` for issue tracking (optional; without one, `/next-right-thing:iterate` runs discovery only and skips PRs).
 
 ## License
 
