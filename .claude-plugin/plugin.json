@@ -1,7 +1,7 @@
 {
   "name": "next-right-thing",
   "displayName": "Next Right Thing",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Do the next right piece of work, chosen to keep a Survive/Invest/Grow balance across a repo.",
   "author": {
     "name": "James Ryan",

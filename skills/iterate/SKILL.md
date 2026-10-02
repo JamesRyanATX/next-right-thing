@@ -18,13 +18,36 @@ Arguments: `$ARGUMENTS`
 
 - empty → choose the bucket (step 2)
 - `survive` | `invest` | `grow` → use that bucket, skip step 2
-- `--dry-run` → stop after step 5 (report the pick, change nothing)
+- `--dry-run` → stop after step 5 (report the pick, change nothing; memory is read, not written)
+
+## Memory
+
+`.nrt/memory.md` is a short-term remember-me log with a section per bucket. It is not a changelog, braglog or statuslog: an entry earns its place only if the next run would otherwise re-derive it or miss it.
+
+Each bucket has two lists:
+
+- **Findings** — what cost something to learn: a non-obvious root cause, a verified false positive, a dead end ("tried X, fails because Y"), a discovered constraint, a grow idea the user rejected and why.
+- **Watch** — paths or subsystems to check whenever this bucket is worked, with the reason.
+
+One line per entry: `- 2026-10-02 — <what is true> — <how we know, or why it matters> (#142, path/)`.
+
+- Never record what was done, PR links, wins, progress or next steps. Git history, the tracker and the close-out report hold those.
+- Most runs add zero to two entries. Zero is fine.
+- File an entry under the bucket it informs, which may not be the bucket being worked.
+- Work someone should do is an issue, not a memory entry.
+- Entries expire 30 days after their date. Ignore expired entries when reading; delete them when writing. If you relied on an entry and it still holds, set its date to today.
+- About 10 entries per bucket. Past that, a new entry replaces the least useful one.
+- Correct or delete an entry that turns out wrong or resolved. Don't mark it done.
+- Memory never steers the bucket choice. Don't use it to argue for or against a bucket; it only shapes what gets picked inside the one already chosen.
+
+Mode comes from `.nrt.yml` key `memory:` — `local` (default) keeps the file out of git, `commit` tracks it in the repo. The helper is `bash "${CLAUDE_PLUGIN_ROOT}/skills/iterate/scripts/memory.sh"`, written `memory.sh` below. Bare, it prints the path and writes nothing; `--init` also creates the file and sets the ignore rule. In commit mode every call takes `--commit`.
 
 ## 1. Orient
 
-- Confirm a git repo; note default branch and `git status`. If the tree is dirty, stop and ask — don't stack work on uncommitted changes.
+- Confirm a git repo; note default branch and `git status`. If the tree is dirty, stop and ask — don't stack work on uncommitted changes. `.nrt/memory.md` on its own doesn't count as dirty.
 - Detect the tracker: `gh` (GitHub), `glab` (GitLab), else none. Check auth once; if it fails, continue with tracker = none and say so.
 - Read target ratio: `NRT_RATIO` env, else `.nrt.yml` key `ratio:` (e.g. `2:1:1`), else `1:1:1`.
+- Read memory: note the mode from `.nrt.yml` key `memory:`, get the path from `memory.sh` (`memory.sh --commit` in commit mode) and read the file if it exists, skipping expired entries. No file yet is normal.
 
 ## 2. Choose the bucket
 
@@ -55,11 +78,13 @@ Classify each into a bucket:
 1. Label match — `bug`, `security`, `incident`, `regression`, `crash` → survive; `tech-debt`, `refactor`, `perf`, `chore`, `ci`, `dx`, `toil`, `docs`, `dependencies` → invest; `enhancement`, `feature`, `feature-request` → grow.
 2. No useful label → read title/body and judge with the table above. Ask: *if we ignore this, do the lights go off (survive), do they keep costing us (invest), or do we just not get the new light (grow)?*
 
-Keep only candidates in the chosen bucket.
+Keep only candidates in the chosen bucket. Read that bucket's memory Findings before judging them: a finding may already explain an issue or rule out an approach.
 
 ## 4. Discovery — when the bucket has no issues
 
 Don't drift to another bucket just because the tracker is empty; look for real work in the chosen one.
+
+Start with the bucket's memory: check its Watch entries first, and skip what its Findings already settled (verified false positives, dead ends, rejected ideas).
 
 **Survive discovery** — run what's cheap and present in the repo:
 - dependency vulnerabilities (`npm audit`, `pip-audit`, `govulncheck`, `cargo audit`, `trivy fs`)
@@ -108,6 +133,7 @@ next #131 flaky TestReconcile, #118 dedupe retry helpers
 - Branch: `nrt/<bucket>/<issue#-or-slug>` off the default branch.
 - Stay in scope. Anything else you notice goes into a new issue (with its bucket label), not this branch.
 - Tests: add or update tests for survive and invest work; grow work gets at least a happy-path test.
+- Memory in `commit` mode: do the step 7 memory update now, with `memory.sh --commit --init`, so it lands in the work commit. Never give it a commit of its own — `ratio.sh` would count that as invest. If the run ends without a work commit, leave the file alone and list what you would have recorded in the close-out instead.
 - Commit with conventional-commit type matching the bucket and a trailer, so the ratio stays measurable:
 
   ```
@@ -121,7 +147,9 @@ next #131 flaky TestReconcile, #118 dedupe retry helpers
 
 ## 7. Close out
 
-One short block: what changed, PR link, ratio after this commit, and the runner-up for the next `/next-right-thing:iterate`. No step recap.
+Update memory (already done in `commit` mode): if there is anything to add, re-date, correct or delete per the Memory rules, run `memory.sh --init` and edit the file. Otherwise leave it alone.
+
+One short block: what changed, PR link, ratio after this commit, the runner-up for the next `/next-right-thing:iterate`, and one line on memory entries added or removed if any. No step recap.
 
 ## Rules
 

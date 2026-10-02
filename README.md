@@ -37,6 +37,17 @@ In a balanced setting the ratio is **1:1:1**. `/next-right-thing:iterate` measur
 4. **Discovery** — if the bucket has no issues, look for real work in it (audits and failing tests for survive; slow CI, manual steps and untested hot files for invest; three proposed ideas for grow, which you pick from).
 5. **One unit of work** — a branch `nrt/<bucket>/<slug>`, a commit with an `NRT-Bucket:` trailer, and a PR. Never merges.
 
+## Memory
+
+Runs keep a short-term memory in `.nrt/memory.md`, with a section for each bucket. It is a remember-me log, not a changelog or status log: it holds only what the next run would otherwise re-derive or miss.
+
+- **Findings** — things that cost something to learn: a non-obvious root cause, a verified false positive, a dead end, a grow idea you rejected and why.
+- **Watch** — parts of the codebase to check whenever that bucket is worked.
+
+Entries are dated and expire after 30 days unless a later run re-confirms them, and each bucket holds about 10. Edit the file by hand whenever you like.
+
+By default the file is local: it is hidden from git through `.git/info/exclude`, so your `.gitignore` is untouched and the next run sees new entries straight away. Set `memory: commit` in `.nrt.yml` to track it in the repo instead. Committed memory is shared and reviewable, but new entries reach later runs only once the PR that carries them merges, and PRs open at the same time can conflict on the file.
+
 ## Configure
 
 Target ratio, in priority order:
@@ -47,6 +58,7 @@ Target ratio, in priority order:
   ```yaml
   ratio: 2:1:1
   file_issues: false   # don't open issues for discovered work
+  memory: commit       # track .nrt/memory.md in the repo (default: local, git-ignored)
   ```
 
 - default `1:1:1`
